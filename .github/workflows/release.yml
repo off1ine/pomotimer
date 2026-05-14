@@ -1,0 +1,39 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Show toolchain
+        run: |
+          swift --version
+          xcodebuild -version
+
+      - name: Build PomoTimer.app
+        run: ./make-app.sh
+
+      - name: Zip the .app bundle
+        run: |
+          cd dist
+          ditto -c -k --sequesterRsrc --keepParent PomoTimer.app "PomoTimer-${GITHUB_REF_NAME}.zip"
+          shasum -a 256 "PomoTimer-${GITHUB_REF_NAME}.zip"
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            --title "PomoTimer $GITHUB_REF_NAME" \
+            --generate-notes \
+            "dist/PomoTimer-${GITHUB_REF_NAME}.zip"
