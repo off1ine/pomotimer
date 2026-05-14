@@ -23,12 +23,12 @@ A small native macOS Pomodoro timer. Lives in a window, a menu bar item, or just
 
 ### Option A — download a pre-built `.app`
 
-_Coming with the first tagged release._
+Grab the latest zip from the [Releases page](https://github.com/off1ine/pomotimer/releases/latest), unzip, drag `PomoTimer.app` into `/Applications`, then launch. See the [Gatekeeper note](#gatekeeper-note) below for the first-launch warning.
 
 ### Option B — build from source
 
 ```bash
-git clone https://github.com/<your-user>/pomotimer
+git clone https://github.com/off1ine/pomotimer
 cd pomotimer
 ./make-app.sh
 open dist/PomoTimer.app
